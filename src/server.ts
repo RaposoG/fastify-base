@@ -6,6 +6,7 @@ import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
 import { env } from "./env";
 import { errorHandler } from "./error-handler";
+import { createAccount } from "./routes/auth/create-account";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -43,6 +44,11 @@ app.register(fastifyJwt, {
 });
 
 app.register(fastifyCors);
+
+// Recomendo registrar as rotas daqui para baixo.
+
+//Auth
+app.register(createAccount);
 
 app.listen({ port: env.PORT }).then(() => {
   console.log(`Server is running on port ${env.PORT}`);
