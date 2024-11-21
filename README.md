@@ -28,6 +28,8 @@ cd BackEndTsFull
 
 2. **Iniciar o projeto**
 
+- Remova .exemple de .env.exemple e configure as variáveis, por padrão recomendo a port 3434
+
 ```bash
 npm i
 docker-compose up -d
