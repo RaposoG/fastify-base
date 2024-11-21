@@ -4,7 +4,7 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
-import { env } from "./env";
+import { env } from "@/env";
 import { errorHandler } from "./error-handler";
 import { createAccount } from "./routes/auth/create-account";
 

@@ -1,6 +1,6 @@
 # 🚀 **Fastify + TypeScript**
 
-Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScript**, **CORS**, **Token Auth**, **Env Config**, **Swagger**, e **ZodTypeProvider** para validação de tipos. Ideal para você começar rápido e fácil com o desenvolvimento de APIs escaláveis e seguras.
+Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScript**, **CORS**, **Token Auth**, **Env Config**, **Swagger**, **ZodTypeProvider** e **Prisma**. Ideal para você começar rápido e fácil com o desenvolvimento de APIs escaláveis e seguras.
 
 ---
 
