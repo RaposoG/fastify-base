@@ -30,6 +30,7 @@ cd BackEndTsFull
 
 ```bash
 npm i
+docker-compose up -d
 npx prisma generate dev
 npm run dev
 ```
