@@ -1,0 +1,34 @@
+{
+  "name": "BackEndTsFull",
+  "version": "1.0.0",
+  "description": "Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScript**, **CORS**, **Token Auth**, **Env Config**, **Swagger**, **ZodTypeProvider** e Prisma para validação de tipos. Ideal para você começar rápido e fácil com o desenvolvimento de APIs escaláveis e seguras.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node build/server.js",
+    "build": "tsup src --out-dir build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.9.1",
+    "prisma": "^5.22.0",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.1",
+    "@fastify/jwt": "^9.0.1",
+    "@fastify/swagger": "^9.3.0",
+    "@fastify/swagger-ui": "^5.1.0",
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.1.0",
+    "fastify-type-provider-zod": "^4.0.2",
+    "zod": "^3.23.8"
+  }
+}
