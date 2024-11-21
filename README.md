@@ -26,6 +26,14 @@ git clone https://github.com/Tanottauro/BackEndTsFull
 cd BackEndTsFull
 ```
 
+2. **Iniciar o projeto**
+
+```bash
+npm i
+npx prisma generate dev
+npm run dev
+```
+
 ## Acesse o Swagger
 - http://localhost:3434/docs
 
