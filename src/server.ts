@@ -5,11 +5,14 @@ import fastifySwaggerUI from "@fastify/swagger-ui";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
 import { env } from "./env";
+import { errorHandler } from "./error-handler";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
+
+app.setErrorHandler(errorHandler);
 
 app.register(fastifySwagger, {
   openapi: {
