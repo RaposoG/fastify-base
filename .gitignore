@@ -6,3 +6,6 @@ node_modules
 #locks
 pnpm-lock.yaml
 
+# build
+build
+
