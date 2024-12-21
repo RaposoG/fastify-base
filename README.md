@@ -22,8 +22,8 @@ Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScr
 1. **Clone o repositório:**
 
 ```bash
-git clone https://github.com/Tanottauro/BackEndTsFull
-cd BackEndTsFull
+git clone https://github.com/Tanottauro/BackEndFastifyStarter
+cd BackEndFastifyStarter
 ```
 
 2. **Iniciar o projeto**
