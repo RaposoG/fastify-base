@@ -4,6 +4,10 @@ import { BadRequestError } from "./routes/_errors/bad-request-error";
 import { UnauthorizedError } from "./routes/_errors/unauthorized-error";
 import { NotFoundError } from "./routes/_errors/not-found-error";
 import { InternalServerError } from "./routes/_errors/internal-server-error";
+import { ForbiddenError } from "./routes/_errors/forbidden-error";
+import { ConflictError } from "./routes/_errors/conflict-error";
+import { NotAcceptableError } from "./routes/_errors/not-acceptable-error";
+import { TooManyRequestsError } from "./routes/_errors/too-many-requests-error";
 
 type FastifyErrorHandler = FastifyInstance["errorHandler"];
 
@@ -18,7 +22,7 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
     return;
   }
 
-  if (error instanceof BadRequestError || error instanceof UnauthorizedError || error instanceof NotFoundError || error instanceof InternalServerError) {
+  if (error instanceof BadRequestError || error instanceof UnauthorizedError || error instanceof NotFoundError || error instanceof InternalServerError || error instanceof ForbiddenError || error instanceof ConflictError || error instanceof NotAcceptableError || error instanceof TooManyRequestsError) {
     reply.status(error.statusCode).send(error.toResponse());
     return;
   }
