@@ -77,6 +77,11 @@ app.register(fastifyCors);
 //Auth
 app.register(createAccount);
 
-app.listen({ port: env.PORT }).then(() => {
-  console.log(`Server is running on port ${env.PORT}`);
-});
+app
+  .listen({ port: env.PORT })
+  .then(() => {
+    console.log(`Server is running on port ${env.PORT}`);
+  })
+  .catch((error) => {
+    console.error("Error starting server:", error);
+  });

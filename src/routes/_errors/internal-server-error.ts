@@ -1,15 +1,16 @@
-export class UnauthorizedError extends Error {
+
+export class InternalServerError extends Error {
   statusCode: number;
 
   constructor(message?: string) {
-    super(message ?? "Unauthorized");
-    this.statusCode = 401;
+    super(message ?? "Internal Server Error");
+    this.statusCode = 500;
   }
 
   toResponse() {
     return {
       statusCode: this.statusCode,
-      error: "Unauthorized",
+      error: "Internal Server Error",
       message: this.message,
     };
   }
