@@ -4,7 +4,7 @@ services:
   pg:
     image: bitnami/postgresql:latest
     ports:
-      - "5439:5432"
+      - "5445:5432"
     environment:
       - POSTGRES_USERNAME=docker
       - POSTGRES_PASSWORD=docker
