@@ -39,7 +39,3 @@ npm run dev
 
 ## Acesse o Swagger
 - http://localhost:3434/docs
-
-
-# Pragma-back
-# Pragma-back
