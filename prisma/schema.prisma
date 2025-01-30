@@ -8,13 +8,41 @@ datasource db {
 }
 
 model User {
-  id           String  @id @default(uuid())
-  name         String?
-  email        String  @unique
-  passwordHash String? @map("password_hash")
+  id String @id @default(uuid())
+
+  name        String
+  email       String
+  password    String
+  permissions Json
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+enum Role {
+  Admin
+  User
+}
+
+model Organization {
+  id String @id @default(uuid())
+
+  name     String
+  nickname String
+  taxId    String @map("tax_id")
+
+  classification Classification
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("organizations")
+}
+
+enum Classification {
+  Client
+  Supplier
+  Both
 }
