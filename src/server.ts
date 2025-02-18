@@ -7,9 +7,10 @@ import fastifyCors from "@fastify/cors";
 import { env } from "@/env";
 import { errorHandler } from "./error-handler";
 import { createAccount } from "./routes/auth/create-account";
+import os from "os";
 
 const app = fastify({
-  logger: env.NODE_ENV == "dev" ? true : false,
+  logger: env.NODE_ENV == "development" ? true : false,
 }).withTypeProvider<ZodTypeProvider>();
 
 app.setSerializerCompiler(serializerCompiler);
@@ -47,16 +48,37 @@ app.register(fastifyJwt, {
 
 app.register(fastifyCors);
 
-// Recomendo registrar as rotas daqui para baixo.
-
 //Auth
 app.register(createAccount);
 
+function getNetworkAddresses() {
+  const interfaces = os.networkInterfaces();
+  const addresses: { name: string; address: string }[] = [];
+
+  for (const name in interfaces) {
+    for (const iface of interfaces[name] || []) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        addresses.push({ name, address: iface.address });
+      }
+    }
+  }
+
+  return addresses;
+}
+
 app
-  .listen({ port: env.PORT })
+  .listen({ port: env.PORT, host: "0.0.0.0" })
   .then(() => {
-    console.log(`Server is running on port ${env.PORT}`);
+    const networkAddresses = getNetworkAddresses();
+
+    console.log(`🚀 Server is running on port ${env.PORT}`);
+
+    console.log("Server is available at the following addresses:");
+
+    networkAddresses.forEach(({ name, address }) => {
+      console.log(`- ${name}: http://${address}:${env.PORT}`);
+    });
   })
   .catch((error) => {
-    console.error("Error starting server:", error);
+    console.error("❌ Server failed to start", error);
   });
