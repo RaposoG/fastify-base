@@ -22,7 +22,7 @@ Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScr
 1. **Clone o repositório:**
 
 ```bash
-git clone https://github.com/Tanottauro/FastifyStater
+git clone https://github.com/RaposoG/FastifyStater
 cd FastifyStater
 ```
 
