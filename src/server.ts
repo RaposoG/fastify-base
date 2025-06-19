@@ -6,8 +6,9 @@ import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
 import { env } from "@/env";
 import { errorHandler } from "./error-handler";
-import { createAccount } from "./routes/auth/create-account";
 import os from "os";
+import { Register } from "./routes/auth/register";
+import { Login } from "./routes/auth/login";
 
 const app = fastify({
   logger: env.NODE_ENV == "development" ? true : false,
@@ -49,7 +50,8 @@ app.register(fastifyJwt, {
 app.register(fastifyCors);
 
 //Auth
-app.register(createAccount);
+app.register(Register);
+app.register(Login);
 
 function getNetworkAddresses() {
   const interfaces = os.networkInterfaces();
@@ -67,7 +69,7 @@ function getNetworkAddresses() {
 }
 
 app
-  .listen({ port: env.PORT, host: "0.0.0.0" })
+  .listen({ port: env.PORT, host: "0.0.0.0" }) // 0.0.0.0 coloca o servidor para escutar em todas as interfaces de rede, use com cautela em ambientes de produção
   .then(() => {
     const networkAddresses = getNetworkAddresses();
 
