@@ -1,0 +1,4 @@
+NODE_ENV="development"
+PORT="3434"
+SECRET_JWT="SEU SEGREDO PARA O JWT AQUI"
+DATABASE_URL="postgresql://docker:docker@localhost:5490/docker-api-back?schema=public"
