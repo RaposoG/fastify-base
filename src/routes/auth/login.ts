@@ -3,6 +3,7 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { BadRequestError } from "../_errors/bad-request-error";
+import { compare } from "bcryptjs";
 
 export async function Login(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -33,7 +34,9 @@ export async function Login(app: FastifyInstance) {
         throw new BadRequestError("Invalid email or password");
       }
 
-      if (userExist.passwordHash !== password) {
+      const passwordCompare = await compare(password, userExist.passwordHash);
+
+      if (!passwordCompare) {
         throw new BadRequestError("Invalid email or password");
       }
 
