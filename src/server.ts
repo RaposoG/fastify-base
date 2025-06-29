@@ -27,29 +27,31 @@ app.register(fastifyRateLimit, {
   skipOnError: true,
 });
 
-app.register(fastifySwagger, {
-  openapi: {
-    info: {
-      title: "Api BackEndTsFull",
-      description: "Api BackEndTsFull",
-      version: "0.0.1",
-    },
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
+if (env.NODE_ENV === "development") {
+  app.register(fastifySwagger, {
+    openapi: {
+      info: {
+        title: "Api BackEndTsFull",
+        description: "Api BackEndTsFull",
+        version: "0.0.1",
+      },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+          },
         },
       },
     },
-  },
-  transform: jsonSchemaTransform,
-});
+    transform: jsonSchemaTransform,
+  });
 
-app.register(fastifyScalar, {
-  routePrefix: "/docs",
-});
+  app.register(fastifyScalar, {
+    routePrefix: "/docs",
+  });
+}
 
 app.register(fastifyJwt, {
   secret: env.SECRET_JWT,
