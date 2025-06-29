@@ -57,7 +57,10 @@ app.register(fastifyJwt, {
   secret: env.SECRET_JWT,
 });
 
-app.register(fastifyCors);
+app.register(fastifyCors, {
+  origin: ["http://localhost:3000"], // coloque seus http e https que são domínios autorizados à fazer requisições no seu backend
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+});
 
 //Auth
 app.register(Register);
