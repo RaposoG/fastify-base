@@ -1,9 +1,10 @@
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
 import { fastify } from "fastify";
 import fastifySwagger from "@fastify/swagger";
-import fastifySwaggerUI from "@fastify/swagger-ui";
+import fastifyScalar from "@scalar/fastify-api-reference";
 import fastifyJwt from "@fastify/jwt";
 import fastifyCors from "@fastify/cors";
+import fastifyRateLimit from "@fastify/rate-limit";
 import { env } from "@/env";
 import { errorHandler } from "./error-handler";
 import os from "os";
@@ -18,6 +19,13 @@ app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 
 app.setErrorHandler(errorHandler);
+
+app.register(fastifyRateLimit, {
+  max: 100,
+  timeWindow: "1 minute",
+  keyGenerator: (req) => req.ip,
+  skipOnError: true,
+});
 
 app.register(fastifySwagger, {
   openapi: {
@@ -39,7 +47,7 @@ app.register(fastifySwagger, {
   transform: jsonSchemaTransform,
 });
 
-app.register(fastifySwaggerUI, {
+app.register(fastifyScalar, {
   routePrefix: "/docs",
 });
 
