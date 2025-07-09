@@ -1,4 +1,4 @@
-# 🚀 **FastifyStater + Typescript**
+# 🚀 ** fastify-base + Typescript**
 
 Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScript**, **CORS**, **Token Auth**, **Env Config**, **Swagger**, **ZodTypeProvider** e **Prisma**. Ideal para você começar rápido e fácil com o desenvolvimento de APIs escaláveis e seguras.
 
@@ -22,8 +22,8 @@ Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScr
 1. **Clone o repositório:**
 
 ```bash
-git clone https://github.com/RaposoG/FastifyStater
-cd FastifyStater
+git clone https://github.com/RaposoG/ fastify-base
+cd  fastify-base
 ```
 
 2. **Iniciar o projeto**
