@@ -4,19 +4,16 @@
   "description": "Uma configuração simples e poderosa para criar APIs com **Fastify**, **TypeScript**, **CORS**, **Token Auth**, **Env Config**, **Swagger**, **ZodTypeProvider** e Prisma para validação de tipos. Ideal para você começar rápido e fácil com o desenvolvimento de APIs escaláveis e seguras.",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "start": "node build/server.js",
-    "build": "npx prisma generate && npx prisma migrate deploy && tsup src --out-dir build"
+    "start": "bun start/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@biomejs/biome": "2.1.2",
     "@types/bcryptjs": "^2.4.6",
-    "@types/node": "24.0.3",
+    "@types/bun": "1.2.19",
     "prisma": "6.4.0",
-    "tsup": "^8.3.5",
-    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   },
   "dependencies": {
@@ -27,11 +24,11 @@
     "@prisma/client": "6.4.0",
     "@scalar/fastify-api-reference": "^1.32.1",
     "bcryptjs": "3.0.2",
-    "dotenv": "^16.4.5",
+    "dotenv": "17.2.0",
     "fastify": "^5.1.0",
     "fastify-plugin": "^5.0.1",
-    "fastify-type-provider-zod": "^4.0.2",
+    "fastify-type-provider-zod": "5.0.2",
     "os": "^0.1.2",
-    "zod": "^3.23.8"
+    "zod": "4.0.5"
   }
 }
