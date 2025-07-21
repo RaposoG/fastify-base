@@ -1,16 +1,15 @@
-export class UnauthorizedError extends Error {
-  statusCode: number;
+import { AppError } from "./app-error";
 
-  constructor(message?: string) {
-    super(message ?? "Unauthorized");
-    this.statusCode = 401;
-  }
+export class UnauthorizedError extends AppError {
+	constructor(message?: string) {
+		super(message ?? "Unauthorized", 401);
+	}
 
-  toResponse() {
-    return {
-      statusCode: this.statusCode,
-      error: "Unauthorized",
-      message: this.message,
-    };
-  }
+	toResponse() {
+		return {
+			statusCode: this.statusCode,
+			error: "Unauthorized",
+			message: this.message,
+		};
+	}
 }

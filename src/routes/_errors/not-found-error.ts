@@ -1,16 +1,15 @@
-export class NotFoundError extends Error {
-  statusCode: number;
+import { AppError } from "./app-error";
 
-  constructor(message?: string) {
-    super(message ?? "Not Found");
-    this.statusCode = 404;
-  }
+export class NotFoundError extends AppError {
+	constructor(message?: string) {
+		super(message ?? "Not Found", 404);
+	}
 
-  toResponse() {
-    return {
-      statusCode: this.statusCode,
-      error: "Not Found",
-      message: this.message,
-    };
-  }
+	toResponse() {
+		return {
+			statusCode: this.statusCode,
+			error: "Not Found",
+			message: this.message,
+		};
+	}
 }

@@ -1,16 +1,15 @@
-export class ConflictError extends Error {
-  statusCode: number;
+import { AppError } from "./app-error";
 
-  constructor(message?: string) {
-    super(message ?? "Conflict");
-    this.statusCode = 409;
-  }
+export class ConflictError extends AppError {
+	constructor(message?: string) {
+		super(message ?? "Conflict", 409);
+	}
 
-  toResponse() {
-    return {
-      statusCode: this.statusCode,
-      error: "Conflict",
-      message: this.message,
-    };
-  }
+	toResponse() {
+		return {
+			statusCode: this.statusCode,
+			error: "Conflict",
+			message: this.message,
+		};
+	}
 }

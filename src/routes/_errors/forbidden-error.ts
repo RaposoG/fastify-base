@@ -1,16 +1,15 @@
-export class ForbiddenError extends Error {
-  statusCode: number;
+import { AppError } from "./app-error";
 
-  constructor(message?: string) {
-    super(message ?? "Forbidden");
-    this.statusCode = 403;
-  }
+export class ForbiddenError extends AppError {
+	constructor(message?: string) {
+		super(message ?? "Forbidden", 403);
+	}
 
-  toResponse() {
-    return {
-      statusCode: this.statusCode,
-      error: "Forbidden",
-      message: this.message,
-    };
-  }
+	toResponse() {
+		return {
+			statusCode: this.statusCode,
+			error: "Forbidden",
+			message: this.message,
+		};
+	}
 }

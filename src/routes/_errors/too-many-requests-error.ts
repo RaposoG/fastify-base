@@ -1,16 +1,15 @@
-export class TooManyRequestsError extends Error {
-  statusCode: number;
+import { AppError } from "./app-error";
 
-  constructor(message?: string) {
-    super(message ?? "Too Many Requests");
-    this.statusCode = 429;
-  }
+export class TooManyRequestsError extends AppError {
+	constructor(message?: string) {
+		super(message ?? "Too Many Requests", 429);
+	}
 
-  toResponse() {
-    return {
-      statusCode: this.statusCode,
-      error: "Too Many Requests",
-      message: this.message,
-    };
-  }
+	toResponse() {
+		return {
+			statusCode: this.statusCode,
+			error: "Too Many Requests",
+			message: this.message,
+		};
+	}
 }

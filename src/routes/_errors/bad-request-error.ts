@@ -1,16 +1,15 @@
-export class BadRequestError extends Error {
-  statusCode: number;
+import { AppError } from "./app-error";
 
-  constructor(message?: string) {
-    super(message ?? "Bad Request");
-    this.statusCode = 400;
-  }
+export class BadRequestError extends AppError {
+	constructor(message?: string) {
+		super(message ?? "Bad Request", 400);
+	}
 
-  toResponse() {
-    return {
-      statusCode: this.statusCode,
-      error: "Bad Request",
-      message: this.message,
-    };
-  }
+	toResponse() {
+		return {
+			statusCode: this.statusCode,
+			error: "Bad Request",
+			message: this.message,
+		};
+	}
 }
