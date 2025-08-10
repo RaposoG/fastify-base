@@ -4,33 +4,30 @@ import { UnauthorizedError } from "../routes/_errors/unauthorized-error";
 
 // esse middleware é responsável por verificar o token JWT e extrair o ID do usuário atual
 export const auth = fastifyPlugin(async (app: FastifyInstance) => {
-	app.decorateRequest("getCurrentUserId", async () => {
-		return "";
-	});
+  app.decorateRequest("getCurrentUserId", async () => {
+    return "";
+  });
 
-	app.addHook("preHandler", async (request, _) => {
-		request.getCurrentUserId = async () => {
-			try {
-				const authHeader = request.headers.authorization;
-				if (!authHeader) {
-					throw new UnauthorizedError("No authorization header");
-				}
-
-				const token = authHeader.replace("Bearer ", "");
-				if (!token) {
-					throw new UnauthorizedError("No token provided");
-				}
-
-				const { sub } = await request.jwtVerify<{ sub: string }>();
-				if (!sub) {
-					throw new UnauthorizedError("Invalid token payload");
-				}
-
-				return sub;
-			} catch (error) {
-				console.error("Auth middleware error:", error);
-				throw new UnauthorizedError("Invalid or expired token");
-			}
-		};
-	});
+  app.addHook("preHandler", async (request, reply) => {
+    request.getCurrentUserId = async () => {
+      try {
+        const { sub } = await request.jwtVerify<{ sub: string }>();
+        if (!sub) {
+          // Limpa todos os cookies e lança não autorizado
+          for (const name of Object.keys(request.cookies ?? {})) {
+            reply.clearCookie(name, { path: "/" });
+          }
+          throw new UnauthorizedError("Invalid token payload");
+        }
+        return sub;
+      } catch (error) {
+        console.error("Auth middleware error:", error);
+        // Limpa todos os cookies e lança não autorizado
+        for (const name of Object.keys(request.cookies ?? {})) {
+          reply.clearCookie(name, { path: "/" });
+        }
+        throw new UnauthorizedError("Invalid or expired token");
+      }
+    };
+  });
 });
