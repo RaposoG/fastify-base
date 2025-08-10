@@ -13,19 +13,11 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       try {
         const { sub } = await request.jwtVerify<{ sub: string }>();
         if (!sub) {
-          // Limpa todos os cookies e lança não autorizado
-          for (const name of Object.keys(request.cookies ?? {})) {
-            reply.clearCookie(name, { path: "/" });
-          }
           throw new UnauthorizedError("Invalid token payload");
         }
         return sub;
       } catch (error) {
         console.error("Auth middleware error:", error);
-        // Limpa todos os cookies e lança não autorizado
-        for (const name of Object.keys(request.cookies ?? {})) {
-          reply.clearCookie(name, { path: "/" });
-        }
         throw new UnauthorizedError("Invalid or expired token");
       }
     };

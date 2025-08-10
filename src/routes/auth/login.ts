@@ -3,7 +3,7 @@ import type { FastifyInstance } from "fastify";
 import { Type } from "@sinclair/typebox";
 import { prisma } from "@/lib/prisma";
 import { env } from "@/env";
-import { BadRequestError } from "../_errors/bad-request-error";
+import { BadRequestError, BadRequestErrorSchema } from "../_errors/bad-request-error";
 
 export async function Login(app: FastifyInstance) {
   app.post(
@@ -18,6 +18,7 @@ export async function Login(app: FastifyInstance) {
         }),
         response: {
           200: Type.Null(),
+          400: BadRequestErrorSchema,
         },
       },
     },

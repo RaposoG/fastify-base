@@ -1,9 +1,17 @@
 import type { FastifyInstance } from "fastify";
 import { AppError } from "./routes/_errors/app-error";
+import { ForbiddenError } from "./routes/_errors/forbidden-error";
+import { UnauthorizedError } from "./routes/_errors/unauthorized-error";
 
 type FastifyErrorHandler = FastifyInstance["errorHandler"];
 
-export const errorHandler: FastifyErrorHandler = async (error, _, reply) => {
+export const errorHandler: FastifyErrorHandler = async (error, request, reply) => {
+  if (error instanceof ForbiddenError || error instanceof UnauthorizedError) {
+    const cookieNames = Object.keys(request.cookies ?? {});
+    for (const name of cookieNames) {
+      reply.clearCookie(name, { path: "/" });
+    }
+  }
   if ((error as any)?.validation) {
     reply.status(400).send({
       statusCode: 400,

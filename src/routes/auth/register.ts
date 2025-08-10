@@ -2,7 +2,7 @@ import { hash } from "bcryptjs";
 import type { FastifyInstance } from "fastify";
 import { Type } from "@sinclair/typebox";
 import { prisma } from "@/lib/prisma";
-import { BadRequestError } from "../_errors/bad-request-error";
+import { BadRequestError, BadRequestErrorSchema } from "../_errors/bad-request-error";
 
 export async function Register(app: FastifyInstance) {
   app.post(
@@ -18,6 +18,7 @@ export async function Register(app: FastifyInstance) {
         }),
         response: {
           201: Type.Null(),
+          400: BadRequestErrorSchema,
         },
       },
     },
