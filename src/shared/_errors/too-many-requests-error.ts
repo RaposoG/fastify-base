@@ -1,5 +1,5 @@
 import { AppError } from "./app-error";
-import { Type } from "@sinclair/typebox";
+import { z } from "zod";
 
 export class TooManyRequestsError extends AppError {
   constructor(message?: string) {
@@ -15,8 +15,8 @@ export class TooManyRequestsError extends AppError {
   }
 }
 
-export const TooManyRequestsErrorSchema = Type.Object({
-  statusCode: Type.Literal(429),
-  error: Type.Literal("Too Many Requests"),
-  message: Type.String(),
+export const TooManyRequestsErrorSchema = z.object({
+  statusCode: z.literal(429),
+  error: z.literal("Too Many Requests"),
+  message: z.string(),
 });
