@@ -5,7 +5,7 @@ import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySwagger from '@fastify/swagger';
 import fastifyScalar from '@scalar/fastify-api-reference';
 import { fastify, type FastifyInstance } from 'fastify';
-import { ZodTypeProvider } from 'fastify-type-provider-zod';
+import { ZodTypeProvider, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
 import { env } from '@/env';
 import { errorHandler } from './error-handler';
 import { authRoutes } from './routes/auth';
@@ -14,6 +14,9 @@ export function createApp(): FastifyInstance {
 	const app = fastify({
 		logger: env.NODE_ENV === 'development',
 	}).withTypeProvider<ZodTypeProvider>();
+
+	app.setValidatorCompiler(validatorCompiler);
+	app.setSerializerCompiler(serializerCompiler);
 
 	app.setErrorHandler(errorHandler);
 
