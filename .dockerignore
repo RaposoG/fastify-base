@@ -1,10 +1,14 @@
 node_modules
 dist
 coverage
+.git
+.gitignore
 .env
 .env.*
 !.env.example
 *.log
-.DS_Store
 .vscode
 .idea
+README.md
+Dockerfile
+docker-compose.yml

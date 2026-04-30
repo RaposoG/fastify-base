@@ -1,11 +1,52 @@
-version: '3.7'
-
 services:
-  pg:
-    image: bitnami/postgresql:latest
-    ports:
-      - "5490:5432"
+  postgres:
+    image: postgres:16-alpine
+    container_name: app_postgres
+    restart: unless-stopped
     environment:
-      - POSTGRES_USERNAME=docker
-      - POSTGRES_PASSWORD=docker
-      - POSTGRES_DATABASE=docker-api-back
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASS:-postgres}
+      POSTGRES_DB: ${DB_NAME:-app_db}
+    ports:
+      - '${DB_PORT:-5432}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-app_db}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3333
+      HOST: 0.0.0.0
+      # Se DATABASE_URL estiver no .env, ela vence. Caso contrário, usamos as discretas.
+      DATABASE_URL: ${DATABASE_URL:-}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASS: ${DB_PASS:-postgres}
+      DB_NAME: ${DB_NAME:-app_db}
+      DB_SSL: ${DB_SSL:-false}
+      DB_SYNCHRONIZE: 'false'
+      DB_LOGGING: 'false'
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    ports:
+      - '${PORT:-3333}:3333'
+    profiles: ['full']
+
+volumes:
+  postgres_data:
+    driver: local

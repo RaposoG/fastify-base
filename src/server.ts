@@ -1,37 +1,31 @@
-import os from 'os';
-import { env } from '@/env';
-import { createApp } from './app';
+import { env } from '@/config/env';
+import { buildApp } from './app';
 
-const app = createApp();
+async function bootstrap(): Promise<void> {
+  const app = await buildApp();
 
-function getNetworkAddresses() {
-	const interfaces = os.networkInterfaces();
-	const addresses: { name: string; address: string }[] = [];
+  try {
+    await app.listen({ port: env.PORT, host: env.HOST });
+    app.log.info(`🚀 Server ready on http://${env.HOST}:${env.PORT}`);
+    app.log.info(`📚 Docs at  http://${env.HOST}:${env.PORT}/docs`);
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
 
-	for (const name in interfaces) {
-		for (const iface of interfaces[name] || []) {
-			if (iface.family === 'IPv4' && !iface.internal) {
-				addresses.push({ name, address: iface.address });
-			}
-		}
-	}
+  const shutdown = async (signal: string): Promise<void> => {
+    app.log.info(`Received ${signal}, shutting down...`);
+    try {
+      await app.close();
+      process.exit(0);
+    } catch (err) {
+      app.log.error(err);
+      process.exit(1);
+    }
+  };
 
-	return addresses;
+  process.on('SIGINT', () => void shutdown('SIGINT'));
+  process.on('SIGTERM', () => void shutdown('SIGTERM'));
 }
 
-app
-	.listen({ port: env.PORT, host: '0.0.0.0' })
-	.then(() => {
-		const networkAddresses = getNetworkAddresses();
-
-		console.log(`🚀 Server is running on port ${env.PORT}`);
-
-		console.log('Server is available at the following addresses:');
-
-		networkAddresses.forEach(({ name, address }) => {
-			console.log(`- ${name}: http://${address}:${env.PORT}`);
-		});
-	})
-	.catch((error) => {
-		console.error('❌ Server failed to start', error);
-	});
+void bootstrap();
