@@ -4,12 +4,7 @@ import { z } from 'zod';
 import { UserEntity } from '../users/user.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { AuthService, type AuthContext, type TokenPair } from './auth.service';
-import {
-  authResponseSchema,
-  loginSchema,
-  registerSchema,
-  userPublicSchema,
-} from './auth.schema';
+import { authResponseSchema, loginSchema, registerSchema, userPublicSchema } from './auth.schema';
 import {
   COOKIE_NAMES,
   clearAuthCookies,
@@ -18,6 +13,7 @@ import {
   setRefreshCookie,
 } from '@/shared/plugins/cookies';
 import { generateCsrfToken } from '@/shared/plugins/csrf';
+import { authRateLimit } from '@/shared/plugins/rate-limit';
 import { UnauthorizedError } from '@/shared/errors/app-error';
 
 const authContextOf = (req: FastifyRequest): AuthContext => ({
@@ -63,6 +59,7 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
   r.post(
     '/auth/register',
     {
+      config: { rateLimit: authRateLimit },
       schema: {
         tags: ['auth'],
         summary: 'Register a new user (sets HttpOnly auth cookies)',
@@ -83,6 +80,7 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
   r.post(
     '/auth/login',
     {
+      config: { rateLimit: authRateLimit },
       schema: {
         tags: ['auth'],
         summary: 'Login (sets HttpOnly auth cookies)',
@@ -108,6 +106,7 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
   r.post(
     '/auth/refresh',
     {
+      config: { rateLimit: authRateLimit },
       schema: {
         tags: ['auth'],
         summary: 'Rotate refresh token via cookie',

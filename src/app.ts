@@ -15,6 +15,7 @@ import { registerCookies } from '@/shared/plugins/cookies';
 import { registerCsrf } from '@/shared/plugins/csrf';
 import { registerDatabase } from '@/shared/plugins/database';
 import { registerJwt } from '@/shared/plugins/jwt';
+import { registerRateLimit } from '@/shared/plugins/rate-limit';
 import { registerSwagger } from '@/shared/plugins/swagger';
 
 export async function buildApp(): Promise<FastifyInstance> {
@@ -51,6 +52,9 @@ export async function buildApp(): Promise<FastifyInstance> {
     },
     credentials: true,
   });
+
+  // Rate limit global (rotas sensíveis apertam o limite por rota)
+  await registerRateLimit(app);
 
   // Cookies (precisa estar registrado antes do JWT, que lê via cookie)
   await registerCookies(app);
