@@ -1,23 +1,23 @@
 import { z } from 'zod';
 
 export const userPublicSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string(),
-  email: z.string().email(),
+  email: z.email(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
 
 export const createUserSchema = z.object({
   name: z.string().min(1).max(120),
-  email: z.string().email().max(180),
+  email: z.email().max(180),
   password: z.string().min(8).max(72),
 });
 
 export const updateUserSchema = createUserSchema.partial();
 
 export const userParamsSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
 });
 
 export const listUsersQuerySchema = z.object({

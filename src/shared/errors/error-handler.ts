@@ -1,6 +1,6 @@
 import type { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod';
-import { ZodError } from 'zod';
+import { z, ZodError } from 'zod';
 import { AppError } from './app-error';
 
 export function registerErrorHandler(app: FastifyInstance): void {
@@ -21,7 +21,7 @@ export function registerErrorHandler(app: FastifyInstance): void {
         statusCode: 400,
         code: 'VALIDATION_ERROR',
         message: 'Validation failed',
-        details: error.flatten(),
+        details: z.treeifyError(error),
       });
     }
 

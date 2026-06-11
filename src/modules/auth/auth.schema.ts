@@ -2,19 +2,19 @@ import { z } from 'zod';
 
 export const registerSchema = z.object({
   name: z.string().min(1).max(120),
-  email: z.string().email().max(180),
+  email: z.email().max(180),
   password: z.string().min(8).max(72),
 });
 
 export const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(1),
 });
 
 export const userPublicSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   name: z.string(),
-  email: z.string().email(),
+  email: z.email(),
 });
 
 /**
