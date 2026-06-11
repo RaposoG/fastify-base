@@ -1,5 +1,7 @@
 import { env } from '@/config/env';
 import { ConflictError, UnauthorizedError } from '@/shared/errors/app-error';
+import { parseDurationToSeconds } from '@/shared/utils/duration';
+import { hashPassword, verifyPassword } from '@/shared/utils/password';
 import type { FastifyInstance } from 'fastify';
 import { createHash, randomBytes } from 'node:crypto';
 import type { Repository } from 'typeorm';
@@ -30,24 +32,6 @@ const REFRESH_TOKEN_BYTES = 48;
 
 const sha256 = (value: string): string => createHash('sha256').update(value).digest('hex');
 
-const parseDurationToSeconds = (value: string): number => {
-  const m = /^(\d+)([smhd])$/.exec(value.trim());
-  if (!m) return 900; // 15min default
-  const n = Number(m[1]);
-  switch (m[2]) {
-    case 's':
-      return n;
-    case 'm':
-      return n * 60;
-    case 'h':
-      return n * 60 * 60;
-    case 'd':
-      return n * 60 * 60 * 24;
-    default:
-      return n;
-  }
-};
-
 export class AuthService {
   constructor(
     private readonly app: FastifyInstance,
@@ -61,10 +45,7 @@ export class AuthService {
     const exists = await this.users.findOne({ where: { email: input.email } });
     if (exists) throw new ConflictError('Email already in use');
 
-    const passwordHash = await Bun.password.hash(input.password, {
-      algorithm: 'bcrypt',
-      cost: 10,
-    });
+    const passwordHash = await hashPassword(input.password);
     const user = await this.users.save(
       this.users.create({ name: input.name, email: input.email, passwordHash }),
     );
@@ -77,7 +58,7 @@ export class AuthService {
     const user = await this.users.findOne({ where: { email: input.email } });
     if (!user) throw new UnauthorizedError('Invalid credentials');
 
-    const ok = await Bun.password.verify(input.password, user.passwordHash);
+    const ok = await verifyPassword(input.password, user.passwordHash);
     if (!ok) throw new UnauthorizedError('Invalid credentials');
 
     const tokens = await this.issueTokens(user, ctx);

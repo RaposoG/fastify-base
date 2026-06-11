@@ -1,10 +1,8 @@
 import { ConflictError, NotFoundError } from '@/shared/errors/app-error';
+import { hashPassword } from '@/shared/utils/password';
 import type { Repository } from 'typeorm';
 import type { UserEntity } from './user.entity';
 import type { CreateUserInput, UpdateUserInput } from './user.schema';
-
-const hashPassword = (plain: string): Promise<string> =>
-  Bun.password.hash(plain, { algorithm: 'bcrypt', cost: 10 });
 
 export class UserService {
   constructor(private readonly repo: Repository<UserEntity>) {}
