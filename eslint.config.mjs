@@ -1,25 +1,21 @@
 // @ts-check
 import eslint from '@eslint/js';
-import prettier from 'eslint-config-prettier';
-import prettierPlugin from 'eslint-plugin-prettier';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**'],
+    // migrations são geradas pelo TypeORM (não seguem nosso style).
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'src/database/migrations/**'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    plugins: {
-      prettier: prettierPlugin,
-    },
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
     },
     rules: {
-      'prettier/prettier': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
@@ -28,5 +24,7 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': 'error',
     },
   },
-  prettier,
+  // Deve vir por último: desliga regras que conflitam com o Prettier
+  // e ativa `prettier/prettier`.
+  eslintPluginPrettierRecommended,
 );

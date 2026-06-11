@@ -1,0 +1,6 @@
+node_modules
+dist
+coverage
+bun.lock
+# Migrations são geradas pelo TypeORM
+src/database/migrations

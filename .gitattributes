@@ -1,0 +1,15 @@
+# Normaliza fim de linha para LF no repositório (consistente cross-platform).
+* text=auto eol=lf
+
+# Arquivos sempre texto/LF
+*.ts text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+bun.lock text eol=lf
+
+# Binários (sem normalização)
+*.png binary
+*.jpg binary
+*.ico binary
